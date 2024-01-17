@@ -1,0 +1,59 @@
+ if(argc < 3) {
+    fprintf(stderr, "Usage: %s limits numoftry [maxserv]\n", argv[0]);
+    exit(EXIT_FAILURE);
+  }
+  
+  int numoftry = atoi(argv[2]);
+  if(numoftry == 0) {
+    fprintf(stderr, "Num of try is invalid\n");
+    exit(EXIT_FAILURE);
+  }
+  int maxservu = 1000000;
+  if(argc == 4) {
+   maxservu = atoi(argv[3]);
+   if (maxservu < 1) {
+    fprintf(stderr, "Error number of max servers\n");
+    exit(EXIT_FAILURE);
+   }
+  }
+  int limits = atoi(argv[1]);
+  if(limits == 0) {
+    fprintf(stderr, "Limits is invalid\n");
+    exit(EXIT_FAILURE);
+  }
+  int master_socket;
+  if(master_socket = socket(AF_INET,SOCK_STREAM,0))
+  {
+    perror("cant create master socket");
+    exit(EXIT_FAILURE);
+  }
+  int opt = 1;
+  if(setsockopt(master_socket,SOL_SOCKET,SO_REUSEADDR,(char *)& opt, sizeof(opt) )< 0)
+  {
+    perror("sockopt");
+  }
+  struct sockaddr_in address;
+  address.sin_family = AF_INET;
+  address.sin_addr.s_addr = INADDR_ANY;
+  address.sin_port = htons(16666);
+
+  if(bind(master_socket,(struct sockaddr_in *)&address, sizeof(address)) < 0)
+  {
+    perror("bind fail");
+    exit(EXIT_FAILURE);
+  }
+
+  fd_set readfds;
+  FD_ZERO(&readfds);
+  FD_SET(master_socket,&readfds);
+  struct sockaddr_in *servers = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
+  bzero(servers,sizeof(struct sockaddr_in));
+  int servCount = 0;
+  int msgsize = sizeof(char) * 18;
+  void *hellomsg = malloc(msgsize);
+  bzero(hellomsg,msgsize);
+  strcpy(hellomsg,"Hello mister serv");
+  while( select (master_socket+1, &readfds,NULL,NULL,NULL) > 0);
+  {
+    int recvdb = recvfrom(master_socket,(void *)hellomsg)
+  }

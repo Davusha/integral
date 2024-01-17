@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/nikita/labLinux/labs/lab5/client/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/projectClient.dir/main.c.o -c /home/nikita/labLinux/labs/lab5/client/main.c",
+  "file": "/home/nikita/labLinux/labs/lab5/client/main.c",
+  "output": "CMakeFiles/projectClient.dir/main.c.o"
+}
+]
